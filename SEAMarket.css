@@ -1,0 +1,117 @@
+/*!
+ * A project by Han Wong (hcwong2@illinois.edu)
+ * CS 498 DV
+ */
+
+                    body{
+                        font: Arial, Helvetica, sans-serif;
+                        color:white;
+                    }
+
+                    h1 {
+                        font: 40px Arial;
+                        color:white;
+                        text-align: center;
+                        margin:0;
+                        padding:10px;
+                    }
+
+                    .axWht line {
+                        stroke: white;
+                    }
+
+                    .axWht path {
+                        stroke: white;
+                    }
+
+                    .axWht text {
+                        fill: white;
+                        font: 15
+                        px Arial;
+                    }
+
+                    .axis,
+                    .axis text {
+                        font: 15px Arial;
+                        fill:#FFFFFF;
+                    } 
+                    
+
+
+                    .annotation {
+                        font: 15px Arial;
+                        fill: #feda6a;
+                    }
+
+                    .datalabel {
+                        font: 15px Arial;
+                        fill: white;
+                    }
+
+                    .line {
+                      fill: none;
+                      stroke:steelblue;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 4px;
+                    }
+                    
+
+                    .overlay {
+                      fill: none;
+                      pointer-events: all;
+                    }
+                    
+                    .focus circle{
+                      fill: white;
+                      stroke:steelblue;
+                      stroke-width: 5px;
+                    }
+                                          
+                    .button {
+                    padding: 10px 10px;
+                    font-size: 15px arial;
+                    text-align: center;
+                    cursor: pointer;
+                    outline: none;
+                    color: black;
+                    background-color: lightgrey;
+                    border: none;
+                    border-radius: 15px;
+                    box-shadow: 0 5px #999;
+                    }
+
+                    .button:hover {
+                            background-color:steelblue;
+                            color: white;
+                                    }
+
+                    .on {
+                    background-color:steelblue;
+                    box-shadow: 0 5px #666;
+                    color: white;
+                    transform: translateY(4px);
+                    }
+
+                    #intro
+                    {
+                        background-image: url("img/architecture-buildings-city-656195.jpg") ;
+                        background-size:cover;
+                        width: auto;;
+                        height:100%;
+                        margin:0;
+                        padding: 0;
+                        
+                    }
+
+                    .content{
+                        font: 16px Arial;
+                        fill:#FFFFFF;
+                        margin:10px 30px 10px 30px;
+                        padding:0;
+                    }
+                   
+                    .textHighlight{
+                        color:#feda6a;
+                    }
+    
