@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+   <head style="margin:0;padding:0">
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script type="text/javascript" src="fullpage.js"></script>
+
+            <link rel="stylesheet" type="text/css" href="fullpage.css" />
+    </head>
+            <style>
+
+                    body{
+                        font: Arial, Helvetica, sans-serif;
+                        color:white;
+                    }
+
+                    h1 {
+                        font: 40px Arial;
+                        color:white;
+                        text-align: center;
+                        margin:0;
+                        padding:10px;
+                    }
+
+                    .axWht line {
+                        stroke: white;
+                    }
+
+                    .axWht path {
+                        stroke: white;
+                    }
+
+                    .axWht text {
+                        fill: white;
+                        font: 15
+                        px Arial;
+                    }
+
+                    .axis,
+                    .axis text {
+                        font: 15px Arial;
+                        fill:#FFFFFF;
+                    } 
+                    
+
+
+                    .annotation {
+                        font: 15px Arial;
+                        fill: #feda6a;
+                    }
+
+                    .datalabel {
+                        font: 15px Arial;
+                        fill: white;
+                    }
+
+                    .line {
+                      fill: none;
+                      stroke:steelblue;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                      stroke-width: 4px;
+                    }
+                    
+
+                    .overlay {
+                      fill: none;
+                      pointer-events: all;
+                    }
+                    
+                    .focus circle{
+                      fill: white;
+                      stroke:steelblue;
+                      stroke-width: 5px;
+                    }
+                                          
+                    .button {
+                    padding: 10px 10px;
+                    font-size: 15px arial;
+                    text-align: center;
+                    cursor: pointer;
+                    outline: none;
+                    color: black;
+                    background-color: lightgrey;
+                    border: none;
+                    border-radius: 15px;
+                    box-shadow: 0 5px #999;
+                    }
+
+                    .button:hover {
+                            background-color:steelblue;
+                            color: white;
+                                    }
+
+                    .on {
+                    background-color:steelblue;
+                    box-shadow: 0 5px #666;
+                    color: white;
+                    transform: translateY(4px);
+                    }
+
+
+                    #intro
+                    {
+                       /*background-image: url("img/aerial-aerial-shot-architecture-667221.jpg") ; */
+                        background-image: url("img/architecture-buildings-city-656195.jpg") ;
+                        background-size:cover;
+                        width: auto;;
+                        height:100%;
+                        margin:0;
+                        padding: 0;
+                        
+                    }
+
+                    .content{
+                        font: 16px Arial;
+                        fill:#FFFFFF;
+                        margin:10px 30px 10px 30px;
+                        padding:0;
+                    }
+                   
+                    .textHighlight{
+                        color:#feda6a;
+                    }
+    
+                    </style> 
+
+    <body style="margin:0; padding:0">
+       
+        <div id="fullpage" >
+            <div id="introSlide"  class="section" data-anchor="intropg">
+                <div id="intro" style="text-align:center">
+                     <h1> Greater Seattle Metro Area Home Price <i>Boom!</i> </h1>
+                      <p class="content">A visualization narrative by Han Wong (hcwong2@illinois.edu)</p>
+                </div>
+            </div>
+            <div id="AbtSlide"  class="section" data-anchor="abtvizpg">
+                <div class="content" >
+                    <h1>ABOUT THE VISUALIZATION</h1>
+                    <p class="content">This narrative visualization uses the <span class="textHighlight">Interactive Slideshow</span> approach to take you through a visual
+                    journey of the housing market from Jan 2010 to March 2018 in the Greater Seattle Metro area.</p>
+                    <p class="content"><span class="textHighlight">The Dataset</span></p>
+                    <p class="content">The Median Home Sale Price and Inventory datasets were acquired from Zillow, May 2018. The data was originally prepared using Tableau Prep
+                        tool to narrow the datasets to data pertaining to the Seattle metro region from Jan 2010 to March 2018.
+                    </p>
+                    <p class="content"><span class="textHighlight">Scenes</span></p>
+                    <p class="content">A consistent and cohensive template was built using CSS layout and FullPage.js to set up the scenes for this visual story.  Scene transition follows an 
+                        intuitive approach of sliding up and down via mouse wheel, touch or key-up/down. Slide navigator, along with tool-tip located at the right side of each slide provides
+                        a good navigation visual cue.  It also acts as a trigger allowing reader to jump to a specific slide. 
+                    </p>
+                    <p class="content"><span class="textHighlight">Annotations</span></p>
+                    <p class="content">Annotations were used to show the high and low points of median home price and inventory on the respective home price and inventory charts.  These call-outs were to 
+                    effectively paint a concise picture of the market landscape for the last 8 years in the Seattle Metro area.    
+                    </p>
+                    <p class="content"><span class="textHighlight">Tooltips & Visual Aids</span></p>
+                    <p class="content">Readers can hover over the line on the line charts to bring up the data-label tooltip to inspect the home price and inventory for a specific timeframe.
+                            Axes of all line charts were clearly labeled.  Each data point in the bubble chart were clearly label with tooltip showing the current mediam home price for the specific city upon hovering over the bubble. 
+                    </p>
+                    <p class="content"><span class="textHighlight">Parameters</span></p>
+                    <p class="content">City location served as the main parameter for the Current Median Home Price bubble chart to allow readers inpect the current median home price based the directionality of cities with respect to Seattle Proper.
+                    The Seattle metro area includes 3 most populous counties covering cities in the Seattle-Bellevue-Everett and Tacoma divisions. These cities are located to the East, North and South of Seattle. Readers are able to 
+                    use the City Location selector to highlight the cities in the bubble chart to furture inspect their respective median home price. 
+                    Both set of line charts also provide two respective parameters: home price vs YoY and Inventory vs YoY to allow readers to switch the relevant charts.
+                    </p>
+                    <p class="content"><span class="textHighlight">Triggers</span></p>
+                    <p class="content">
+                            As noted above, buttons were used on both set of line charts to trigger the display  of a proper chart (home price vs YoY and Inventory vs YoY).  The City Locator selector serves as the mechanism to 
+                            trigger the highlights of cities based on the selected direction.  All charts, with mouse over as the tigger to display the data tooltips.
+                            The slide navigator also serves as the trigger allowing readers to jump to a specific slide.
+                    </p>
+                    </div>
+            </div>
+            <div id="hmpSlide"  class="section" data-anchor="hmpricepg" >
+                    <h1>Skyrocketing Home Prices with No Signs of Slowing Down!</h1>
+                    <div  style="left:100px;position:relative"> 
+                            <div  style="top:100px;left:750px;width:300px;position:absolute"> 
+                                    <p class="content">
+                                     <span class="textHighlight">2010-2011:</span><br>Early period of recession recovery. Financial regulations implemented.<br><br>
+                                     <span class="textHighlight">Late 2011:</span><br>Home prices bottomed out.<br><br>
+                                     <span class="textHighlight">Early 2012:</span><br>First sign of market recovery. Home prices climbed.<br><br>
+                                     <span class="textHighlight">2012 - Current:</span><br>Upward growth of home prices. No signs of cooling. <br><br>
+
+                                    </p>
+                            </div> 
+                            <div  style="top:450px;left:750px;width:550px;position:absolute"> 
+                                    <p class="content">
+                                     Home prices in the Seattle metro area have been climbing after seeing the lowest median home price of <span  class="textHighlight">$259K</span> in late 2011.  Toggling to the YoY trend chart, you'll notice that median home price has a solid growth for the last 7 years. 
+                                     Last year home prices grew <span  class="textHighlight">12%</span>. With no sign of the market cooling, median home price climbed to <span  class="textHighlight">$441.8k</span> at the beginning of the 2018 season. 
+                                    </p>
+                                </div>  
+                        <button id="btnHmPrice" class="button on" >Median Home Price</button>&nbsp;<button id="btnYoY" class="button">YoY Change</button><br>
+                        <svg id="homeprice" ></svg><svg id="yoy" style="display: none"></svg>
+                    </div>
+    
+                </div>
+            
+            <div id="invtrySlide"  class="section" data-anchor="inventorypg">
+                    <h1>Shrinking Housing Inventory Not Meeting Demand!</h1>
+                    <div  style="left:100px;position:relative"> 
+                            <div  style="top:50px;left:750px;width:300px;position:absolute"> 
+                                    <p class="content">
+                                     <span class="textHighlight">2010-2011:</span><br>Early period of recession recovery. Financial regulations implemented. Inventory at its hightest<br><br>
+                                     <span class="textHighlight">Late 2011-Early 2012:</span><br>Intentory dropped significantly.<br><br>
+                                     <span class="textHighlight">2012 - Current:</span><br>Inventory remains low and shrinking. Inventory bottom out early 2018.<br><br>
+
+                                    </p>
+                            </div> 
+                            <div  style="top:350px;left:750px;width:550px;position:absolute"> 
+                                    <p class="content">
+                                            Housing inventory peaked during the early recovery phase of the 2008 Great Recession with median home price remained low.  
+                                            Many of the inventories were left over “under-watered” from the subprime crisis. With lingering downturn effect of the recession, 
+                                            inventory was at it <span  class="textHighlight">highest at 14.6K in mid 2010</span> and remained high throughout 2011. This is also the period where home prices bottomed out as housing supply was far greater than the demand.
+                                            2012 was the pivotal point where there was a sharp increase in housing demand which resulted in significant dip of the housing inventory. Toggling to the YoY trend chart, you'll notice that <span  class="textHighlight">inventory dropped 41% in 2012</span>, and this in turns caused the median home price to climb.  
+                                            Demand continued to out pace supply as inventory persisted to shrink and <span  class="textHighlight">bottomed out at 2.1k in early 2018 while median home price climbed to the highest level at $421K</span>.
+                                     </p>
+                                </div>  
+                            <button id="btnInventory" class="button on" >Inventory</button>&nbsp;<button id="btnInvtryYoY" class="button">YoY Change</button><br>
+                            <svg id="inventory"></svg><svg id="invtryyoy" style="display: none"></svg>
+                    </div>
+
+            </div>
+            
+
+            <div id="citySlide"  class="section" data-anchor="regionpg">
+                <h1>Surge of Tech Workers driving Home Pricing Boom!</h1>
+                <div  style="left:100px;position:relative"> 
+                <span class="textHighlight"> City Location:</span> 
+                        <select id="selGeo">
+                            <option value="All">All</option>
+                            <option value="Proper">Seattle Proper</option>
+                            <option value="East">East of Seattle</option>
+                            <option value="North">North of Seattle</option>
+                            <option value="South">South of Seattle</option>
+                        </select>  <br> (hover over the bubble to inspect 2018 median home price)        
+                        <br>
+                        <div  style="top:0px;left:750px;width:550px;position:absolute"> 
+                                <p class="content">
+                                 The Greater Seattle Metro area includes 3 most populous counties(King, Snohomish and Pierce) covering cities in the Seattle-Bellevue-Everett and Tacoma divisions. These cities are located to the East, North and South of Seattle.
+                                 As The Greater Seattle Metro area continues to establish itself as the tech hub in the Pacific Northwest region,  there have been an increasing present of tech startups along with industry giants such as Amazon, Google, Facebook, Salesforce and Microsoft.
+                                 High salaried tech workers flock to the area and surging the demand for single family home. With the shrinking inventory not meeting the increasing demand, home prices surrounding the workplaces of these tech workers continues to skyrocket.
+                                 In 2017. the median home price in the Greater Seattle area saw a 12% YoY growth!
+                                <br>
+                                <br>
+                                <span class="textHighlight">Major Cities with Present of High Tech Giants:</span>
+                                <br>
+                                <span class="textHighlight">Seattle:</span>Amazon, Google, Facebook<br><br>
+                                <span class="textHighlight">Redmond:</span>Microsoft<br><br>
+                                <span class="textHighlight">Bellevue:</span>Microsoft, SalesForce, Oracle, Expedia. T-Mobile<br><br>
+                                <span class="textHighlight">Kirkland:</span>Google, Tableau<br><br>
+                                <span class="textHighlight">Everett, Renton:</span>Boeing<br><br>
+                                
+
+                            </p>
+                            </div>  
+                    <svg id="metrobubble" style="display:block"></svg>
+                </div>
+            </div>
+        </div>
+ 
+    
+   
+<script>
+
+        new fullpage('#fullpage', {
+            licenseKey: "OPEN-SOURCE-GPLV3-LICENSE",
+            autoScrolling:true,
+            //scrollHorizontally:true,
+            navigation:true,
+            navigationPosition: 'right',
+            anchors:["intropg","hmpricepg","abtvizpg","inventorypg","regionpg","attrbpg"],
+            navigationTooltips:['Introduction','About Vizualization','Median Home Prices','Inventories','Current Home Price Boom','Attributions'],
+            slidesNavPosition:"left",
+            keyboardScrolling:true,
+            
+
+
+
+            sectionsColor: ['black','black','black','black','black','black','black'],
+
+            //scrollingSpeed:700,
+            //easing: 'easeInOutCubic',
+            loopBottom:true,
+
+
+           // sectionSelector: '.section'     
+        });
+
+
+
+
+
+        d3.select("#selGeo").on('change', function(d,i)
+            {
+                var sel = d3.select(this).property('value');
+
+                if (sel == "All")
+                {
+                    var bub = document.querySelectorAll('[id^="bubble-"]');
+                    bub.forEach(function(c) {document.getElementById(c.id).style.opacity = "1";
+                                             document.getElementById(c.id).style.transition = "opacity 0.9s"});
+                }
+                else
+                {
+                    var bub = document.querySelectorAll('[id^="bubble-"]');
+                    bub.forEach(function(c) {document.getElementById(c.id).style.opacity = "0.2";
+                                             document.getElementById(c.id).style.transition = "opacity 0.9s"});
+                    
+                    var regx = '[id$="-'+sel+'"]';
+                    var elem = document.querySelectorAll(regx);
+                    elem.forEach(function(c) {document.getElementById(c.id).style.opacity = "1";
+                                                document.getElementById(c.id).style.transition = "opacity 0.9s"});
+                }
+            }
+        );
+
+
+        d3.select("#btnHmPrice").on("click", function(d,i)
+        {
+            //
+            var style = document.getElementById("homeprice").style.display;
+            if(style === "none")
+                {
+                    document.getElementById("homeprice").style.display = "block";
+                    document.getElementById("homeprice").style.textAlign = "center";
+                    document.getElementById("btnHmPrice").className = "button on";
+                    document.getElementById("yoy").style.display = "none";
+                    document.getElementById("btnYoY").className = "button";
+                }
+
+        });
+        d3.select("#btnYoY").on("click", function(d,i)
+        {
+
+
+            var style = document.getElementById("yoy").style.display;
+            if(style === "none")
+                {
+                    document.getElementById("homeprice").style.display = "none";
+                    document.getElementById("btnYoY").className = "button on";
+                    document.getElementById("yoy").style.display = "block";
+                    document.getElementById("yoy").style.textAlign = "center";
+                    document.getElementById("btnHmPrice").className = "button";
+                }
+        });
+
+
+        d3.select("#btnInventory").on("click", function(d,i)
+        {
+            //
+            var style = document.getElementById("inventory").style.display;
+            if(style === "none")
+                {
+                    document.getElementById("inventory").style.display = "block";
+                    document.getElementById("inventory").style.textAlign = "center";
+                    document.getElementById("btnInventory").className = "button on";
+                    document.getElementById("invtryyoy").style.display = "none";
+                    document.getElementById("btnInvtryYoY").className = "button";
+                }
+
+        });
+        d3.select("#btnInvtryYoY").on("click", function(d,i)
+        {
+
+
+            var style = document.getElementById("invtryyoy").style.display;
+            if(style === "none")
+                {
+                    document.getElementById("inventory").style.display = "none";
+                    document.getElementById("btnInvtryYoY").className = "button on";
+                    document.getElementById("invtryyoy").style.display = "block";
+                    document.getElementById("invtryyoy").style.textAlign = "center";
+                    document.getElementById("btnInventory").className = "button";
+                }
+        });
+
+
+
+        var colorscheme = d3.scaleOrdinal(d3.schemeCategory20c);
+
+        var parseDate = d3.timeParse("%m/%d/%Y")
+        var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+        var formatValue = d3.format(",.0f");
+        var formatCurrency = function(d) { return "$" + formatValue(d); };
+
+        var dataset;
+
+        var chartWidth = 800,
+            chartHeight = 600,
+            bubbleWidth = 760,
+            bubbleHeight = 760;
+
+
+        var margin = {top: 60, right: 80, bottom: 30, left: 50},
+            width = +chartWidth - margin.left - margin.right,
+            height = +chartHeight - margin.top - margin.bottom;
+
+        var chart1 = d3.select("#homeprice")
+            .attr("width", chartWidth)
+            .attr("height",chartHeight);
+
+        var chart2 = d3.select("#yoy")
+            .attr("width", chartWidth)
+            .attr("height",chartHeight);
+
+        var chart3 = d3.select("#inventory")
+            .attr("width", chartWidth)
+            .attr("height",chartHeight);
+
+        var chart5 = d3.select("#invtryyoy")
+            .attr("width", chartWidth)
+            .attr("height",chartHeight);
+
+
+        var chart4 = d3.select("#metrobubble")
+            .attr("width", bubbleWidth)
+            .attr("height",bubbleHeight);
+
+         var pack = d3.pack()
+         .size([bubbleWidth, bubbleHeight])   
+         .padding(1.5);
+  
+
+
+        loadMedianHomePrice();
+        loadYoYChange();
+        loadInventory();
+        loadInventoryYoYChange();
+        loadMetroMHP();
+
+    function loadMedianHomePrice()
+    {
+        d3.tsv("data/Zillow_SFR_SEA_MedianSales_10year.tsv",
+         function(d) {
+                return {
+                    date: parseDate(d.Date),
+                    median_home_price: +d.Median_Home_Price             
+                };
+
+              }, function(data) { drawChart(data) }
+
+        );
+    }
+
+
+    function loadYoYChange()
+    {
+        d3.csv("data/Greater_Seattle_Median_Home_Price_YoY.csv",
+         function(d) {
+                return {
+                    date: d3.timeParse("%Y")(d.Year),
+                    yoy: +d.YoY_Change * 100            
+                };
+
+              }, function(data) { drawChart2(data) }
+
+        );
+    }
+
+
+
+
+    function loadInventory()
+        {
+            d3.csv("data/Zillow_SEA_sum_Inventories.csv",
+            function(d) {
+                    return {
+                        date: parseDate(d.date),
+                        inventory: +d.inventory            
+                    };
+
+                }, function(data) {drawChart3(data) }
+
+            );
+        }
+
+    function loadInventoryYoYChange()
+    {
+        d3.csv("data/Zillow_SEA_Inventories_YoY.csv",
+         function(d) {
+                return {
+                    date: d3.timeParse("%Y")(d.Year),
+                    yoy: +d.YoY_Change * 100            
+                };
+
+              }, function(data) { drawChart5(data) }
+
+        );
+    }
+
+function loadMetroMHP()
+    {
+        d3.tsv("data/SEATAC_Cities_Median_Home_Price_0318.tsv",
+            function(d) {
+                     return {
+                            city: d.RegionName,
+                            median_home_price: +d.Median_Sale_Price,
+                            direction: d.Direction            
+                             };
+
+                }, function(data) {drawBubble(data) }
+
+            );
+        
+    }
+
+    
+    function drawBubble(dataset)
+    {
+        
+        
+        var root = d3.hierarchy({children: dataset})
+            .sum(function(d) {  return d.median_home_price; });
+        
+
+        var node = chart4.selectAll(".node")
+            .data(pack(root).leaves())
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+        node.append("title")
+                    .text(function(d) {
+                        return d.data.city + "\n" + formatValue(d.data.median_home_price/1000) + "K";
+                    });
+
+        node
+            .append("circle")
+            .attr("id", function(d) { return "bubble-"+d.data.city + "-" + d.data.direction; })
+            .attr("r", function(d) { return d.r ; })
+            .style("fill", function(d,i) { return colorscheme(i); });
+
+        node.append("text")
+            .attr("id", function(d) { return "bubble-txt-"+d.data.city + "-" + d.data.direction; })
+                    .attr("dy", "0.5em")
+                    .style("text-anchor", "middle")
+                    .text(function(d) {
+                        return d.data.city;
+                    })
+                    .attr("class", "bubble")
+                    .attr("font-size", function(d){
+                        return d.r/4;
+                    });
+
+    }
+
+
+    function drawChart(dataset)
+    {
+        
+        
+        //draw line chart
+        var x = d3.scaleTime()
+                .rangeRound([0,width]);
+        
+        var y = d3.scaleLinear()
+                .rangeRound([height,0]);
+        
+        var line = d3.line()
+                .x(function(d) {return x(d.date); })
+                .y(function(d) {return y(d.median_home_price);} );
+
+        x.domain(d3.extent(dataset, function(d) {return d.date;}));
+        y.domain(d3.extent(dataset, function(d) {return d.median_home_price;}));
+
+        g= chart1.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        var path = g.append("path")
+                .datum(dataset)
+                .attr("class","line")
+                .attr("d",line)
+        
+        //lowest median home price annotation
+        anHPLow = g.append("text")
+            .attr("x", x(parseDate("11/01/2011")))
+            .attr("y", y(259000)-50)
+            .attr("class","annotation")
+            .style("text-anchor", "middle")
+            
+        anHPLow.append("tspan")
+            .attr("x", x(parseDate("11/01/2011")))
+            .attr("dy","1.0em")
+            .text("Lowest Median Home Price");
+
+        anHPLow.append("tspan")
+            .attr("x", x(parseDate("11/01/2011")))
+            .attr("dy","1.0em")
+            .text("$259K");
+
+        //highest median home price annotation
+        anHPHigh = g.append("text")
+            .attr("x", x(parseDate("3/01/2018"))-50)
+            .attr("y", y(441800))
+            .attr("class","annotation")
+            .style("text-anchor", "middle")
+        
+        anHPHigh.append("tspan")
+            .attr("x", x(parseDate("3/01/2018"))-50)
+            .attr("dy","1.0em")
+            .text("Highest Median Home Price");
+
+        anHPHigh.append("tspan")
+            .attr("x", x(parseDate("03/01/2018"))-50)
+            .attr("dy","1.0em")
+            .text("$441.8K");
+        
+        g.append("g")
+            .attr("class","axWht")
+            .attr("transform","translate(0,"+height+")")
+            .call(d3.axisBottom(x))
+            .select(".domain")
+            .remove();
+
+        g.append("g")
+            .attr("class","axWht")
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("class","axis")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("Median Home Price ($)");
+
+ 
+
+        var focus = g.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+
+
+        focus.append("circle")
+            .attr("r", 7.5);
+
+        focus.append("text")
+            .attr("class","datalabel")
+            .attr("x", 15)
+            .attr("dy", ".31em");
+
+        chart1.append("rect")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", mousemove);
+
+        function mousemove() {
+        var x_point = x.invert(d3.mouse(this)[0]);
+            i = bisectDate(dataset, x_point);
+            d0 = dataset[i - 1];
+            d1 = dataset[i];
+            if (d0 != "undefined" && d1 != "undefined" )
+            {
+                //find the closer date value to x-cor of the mouse position
+                    d = x_point - d0.date > d1.date - x_point ? d1 : d0;
+                //console.log(d.date);
+                // console.log((d.median_home_price));
+                // console.log(d0);
+                // console.log(d1);
+                // console.log(x_point);
+                focus.attr("transform", "translate(" + x(d.date) + "," + y(d.median_home_price) + ")");
+                focus.select("text").text(function() { return formatCurrency(d.median_home_price); });
+            }
+        }
+
+}
+
+function drawChart2(dataset)
+{
+
+        //draw line chart
+        var x = d3.scaleTime()
+                .rangeRound([0,width]);
+        
+        var y = d3.scaleLinear()
+                .rangeRound([height,0]);
+        
+        var line = d3.line()
+                .x(function(d) {return x(d.date); })
+                .y(function(d) {return y(d.yoy);} );
+
+
+        x.domain(d3.extent(dataset, function(d) {return d.date;}));
+        y.domain(d3.extent(dataset, function(d) {return d.yoy;}));
+
+        g= chart2.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        var path = g.append("path")
+                .datum(dataset)
+                .attr("class","line")
+                .attr("d",line)
+
+        g.append("g")
+            .attr("class","axWht")
+            .attr("transform","translate(0,"+height+")")
+            .call(d3.axisBottom(x))
+            .select(".domain")
+            .remove();
+
+        g.append("g")
+            .attr("class","axWht")
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("class","axis")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("YoY Change of Home Price(%)");
+
+
+        var focus = g.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+
+            focus.append("circle")
+                .attr("r", 7.5);
+
+            focus.append("text")
+                .attr("class","datalabel")
+                .attr("x", 15)
+                .attr("dy", ".31em");
+
+            chart2.append("rect")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .attr("class", "overlay")
+                .attr("width", width)
+                .attr("height", height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove);
+
+            function mousemove() {
+            var x_point = x.invert(d3.mouse(this)[0]),
+                i = bisectDate(dataset, x_point),
+                d0 = dataset[i - 1],
+                d1 = dataset[i],
+                //find the closer date value to x-cor of the mouse position
+                d = x_point - d0.date > d1.date - x_point ? d1 : d0;
+            focus.attr("transform", "translate(" + x(d.date) + "," + y(d.yoy) + ")");
+            focus.select("text").text(function() { return formatValue(d.yoy) + "%"}); 
+        
+            }
+}
+
+
+function drawChart3(dataset)
+{
+
+        //draw line chart
+        var x = d3.scaleTime()
+                .rangeRound([0,width]);
+        
+        var y = d3.scaleLinear()
+                .rangeRound([height,0]);
+        
+        var line = d3.line()
+                .x(function(d) {return x(d.date); })
+                .y(function(d) {return y(d.inventory);} );
+
+
+
+        x.domain(d3.extent(dataset, function(d) {return d.date;}));
+        y.domain(d3.extent(dataset, function(d) {return d.inventory;}));
+
+        g= chart3.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        var path = g.append("path")
+                .datum(dataset)
+                .attr("class","line")
+                .attr("d",line)
+        
+   //lowest inventory annotation
+   anInventoryLow = g.append("text")
+        .attr("x", x(parseDate("2/01/2018")))
+        .attr("y", y(2149)-50)
+        .attr("class","annotation")
+        .style("text-anchor", "middle")
+            
+        anInventoryLow.append("tspan")
+            .attr("x", x(parseDate("2/01/2018")))
+            .attr("dy","1.0em")
+            .text("Lowest Inventory");
+
+        anInventoryLow.append("tspan")
+            .attr("x", x(parseDate("2/01/2018")))
+            .attr("dy","1.0em")
+            .text("2149");
+
+        //highest median home price annotation
+        anInventoryHigh = g.append("text")
+            .attr("x", x(parseDate("7/1/2010"))+50)
+            .attr("y", y(14572))
+            .attr("class","annotation")
+            .style("text-anchor", "middle")
+        
+        anInventoryHigh.append("tspan")
+            .attr("x", x(parseDate("7/1/2010"))+50)
+            .attr("dy","-0.9em")
+            .text("Highest Inventory");
+
+        anInventoryHigh.append("tspan")
+            .attr("x", x(parseDate("7/1/2010"))+50)
+            .attr("dy","1.0em")
+            .text("14572");
+
+        g.append("g")
+            .attr("class","axWht")
+            .attr("transform","translate(0,"+height+")")
+            .call(d3.axisBottom(x))
+            .select(".domain")
+            .remove();
+
+        g.append("g")
+            .attr("class","axWht")
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("class","axis")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("Inventory");
+
+
+        var focus = g.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+
+            focus.append("circle")
+                .attr("r", 7.5);
+
+            focus.append("text")
+                .attr("class","datalabel")
+                .attr("x", 15)
+                .attr("dy", ".31em");
+
+            chart3.append("rect")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .attr("class", "overlay")
+                .attr("width", width)
+                .attr("height", height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove);
+
+            function mousemove() {
+            var x_point = x.invert(d3.mouse(this)[0]),
+                i = bisectDate(dataset, x_point),
+                d0 = dataset[i - 1],
+                d1 = dataset[i],
+                //find the closer date value to x-cor of the mouse position
+                d = x_point - d0.date > d1.date - x_point ? d1 : d0;
+            focus.attr("transform", "translate(" + x(d.date) + "," + y(d.inventory) + ")");
+            focus.select("text").text(function() { return d.inventory }); 
+        
+            }
+}
+
+      function drawChart5(dataset)
+{
+
+        //draw line chart
+        var x = d3.scaleTime()
+                .rangeRound([0,width]);
+        
+        var y = d3.scaleLinear()
+                .rangeRound([height,0]);
+        
+        var line = d3.line()
+                .x(function(d) {return x(d.date); })
+                .y(function(d) {return y(d.yoy);} );
+
+
+        x.domain(d3.extent(dataset, function(d) {return d.date;}));
+        y.domain(d3.extent(dataset, function(d) {return d.yoy;}));
+
+        g= chart5.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        var path = g.append("path")
+                .datum(dataset)
+                .attr("class","line")
+                .attr("d",line)
+
+        g.append("g")
+            .attr("class","axWht")
+            .attr("transform","translate(0,"+height+")")
+            .call(d3.axisBottom(x))
+            .select(".domain")
+            .remove();
+
+        g.append("g")
+            .attr("class","axWht")
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("class","axis")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("YoY Change of Inventory(%)");
+
+
+        var focus = g.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+
+            focus.append("circle")
+                .attr("r", 7.5);
+
+            focus.append("text")
+                .attr("class","datalabel")
+                .attr("x", 15)
+                .attr("dy", ".31em");
+
+            chart5.append("rect")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .attr("class", "overlay")
+                .attr("width", width)
+                .attr("height", height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove);
+
+            function mousemove() {
+            var x_point = x.invert(d3.mouse(this)[0]),
+                i = bisectDate(dataset, x_point),
+                d0 = dataset[i - 1],
+                d1 = dataset[i],
+                //find the closer date value to x-cor of the mouse position
+                d = x_point - d0.date > d1.date - x_point ? d1 : d0;
+            focus.attr("transform", "translate(" + x(d.date) + "," + y(d.yoy) + ")");
+            focus.select("text").text(function() { return formatValue(d.yoy) + "%"}); 
+        
+            }
+}
+
+</script>  
+
+</body>
+
+
+</html>
