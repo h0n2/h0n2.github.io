@@ -73,7 +73,7 @@
                                     </p>
                                 </div>  
                         <button id="btnHmPrice" class="button on" >Median Home Price</button>&nbsp;<button id="btnYoY" class="button">YoY Change</button><br>
-                        <svg id="homeprice" ></svg><svg id="yoy" style="display: none"></svg>
+                        <svg id="homeprice" ></svg><svg id="yoy" style="display: none"></svg><br> <i>(note:hover over the line to inspect the data)</i>
                     </div>
     
                 </div>
@@ -99,7 +99,7 @@
                                      </p>
                                 </div>  
                             <button id="btnInventory" class="button on" >Inventory</button>&nbsp;<button id="btnInvtryYoY" class="button">YoY Change</button><br>
-                            <svg id="inventory"></svg><svg id="invtryyoy" style="display: none"></svg>
+                            <svg id="inventory"></svg><svg id="invtryyoy" style="display: none"></svg><br> <i>(note:hover over the line to inspect the data)</i>
                     </div>
 
             </div>
@@ -160,7 +160,10 @@
     
    
 <script>
-
+//**********************************************************
+// A data narrative project by Han Wong (hcwong2@illinois.edu)
+// CS 498 DV
+//**********************************************************
         new fullpage('#fullpage', {
             licenseKey: "OPEN-SOURCE-GPLV3-LICENSE",
             autoScrolling:true,
@@ -178,10 +181,9 @@
     
         });
 
-
-
-
-
+//
+// Selection trigger: City Direction
+//
         d3.select("#selGeo").on('change', function(d,i)
             {
                 var sel = d3.select(this).property('value');
@@ -206,7 +208,9 @@
             }
         );
 
-
+//
+// button trigger to display Home Prices vs YoY
+//
         d3.select("#btnHmPrice").on("click", function(d,i)
         {
             //
@@ -236,7 +240,9 @@
                 }
         });
 
-
+//
+// button trigger to display Inventory vs YoY
+//
         d3.select("#btnInventory").on("click", function(d,i)
         {
             //
@@ -267,7 +273,9 @@
         });
 
 
-
+//
+// Setting up charts
+//
         var colorscheme = d3.scaleOrdinal(d3.schemeCategory20c);
 
         var parseDate = d3.timeParse("%m/%d/%Y")
@@ -280,31 +288,31 @@
         var chartWidth = 800,
             chartHeight = 600,
             bubbleWidth = 760,
-            bubbleHeight = 760;
+            bubbleHeight = 720;
 
 
         var margin = {top: 60, right: 80, bottom: 30, left: 50},
             width = +chartWidth - margin.left - margin.right,
             height = +chartHeight - margin.top - margin.bottom;
 
-        var chart1 = d3.select("#homeprice")
+        var hmPriceLC = d3.select("#homeprice")
             .attr("width", chartWidth)
             .attr("height",chartHeight);
 
-        var chart2 = d3.select("#yoy")
+        var hmpYoYLC = d3.select("#yoy")
             .attr("width", chartWidth)
             .attr("height",chartHeight);
 
-        var chart3 = d3.select("#inventory")
+        var invtryLC = d3.select("#inventory")
             .attr("width", chartWidth)
             .attr("height",chartHeight);
 
-        var chart5 = d3.select("#invtryyoy")
+        var invtryYoYLC = d3.select("#invtryyoy")
             .attr("width", chartWidth)
             .attr("height",chartHeight);
 
 
-        var chart4 = d3.select("#metrobubble")
+        var metroBC = d3.select("#metrobubble")
             .attr("width", bubbleWidth)
             .attr("height",bubbleHeight);
 
@@ -313,13 +321,15 @@
          .padding(1.5);
   
 
-
+        // loading data on page load
+        // data from  Zillow, May 2018 https://www.zillow.com/research/data/ 
         loadMedianHomePrice();
         loadYoYChange();
         loadInventory();
         loadInventoryYoYChange();
         loadMetroMHP();
 
+    //Load Median Home Prices for 2010-2018
     function loadMedianHomePrice()
     {
         d3.tsv("data/Zillow_SFR_SEA_MedianSales_10year.tsv",
@@ -329,12 +339,12 @@
                     median_home_price: +d.Median_Home_Price             
                 };
 
-              }, function(data) { drawChart(data) }
+              }, function(data) { drawhmPriceLC(data) }
 
         );
     }
 
-
+    //Load Median Home Price YoY change for 2011-2017
     function loadYoYChange()
     {
         d3.csv("data/Greater_Seattle_Median_Home_Price_YoY.csv",
@@ -344,14 +354,13 @@
                     yoy: +d.YoY_Change * 100            
                 };
 
-              }, function(data) { drawChart2(data) }
+              }, function(data) { drawhmpYoYLC(data) }
 
         );
     }
 
 
-
-
+    //Load Inventory for 2010-2018
     function loadInventory()
         {
             d3.csv("data/Zillow_SEA_sum_Inventories.csv",
@@ -361,11 +370,12 @@
                         inventory: +d.inventory            
                     };
 
-                }, function(data) {drawChart3(data) }
+                }, function(data) {drawinvtryLC(data) }
 
             );
         }
 
+    //Load Inventory YoY change for 2011-2017
     function loadInventoryYoYChange()
     {
         d3.csv("data/Zillow_SEA_Inventories_YoY.csv",
@@ -375,37 +385,37 @@
                     yoy: +d.YoY_Change * 100            
                 };
 
-              }, function(data) { drawChart5(data) }
+              }, function(data) { drawinvtryYoYLC(data) }
 
         );
     }
 
-function loadMetroMHP()
-    {
-        d3.tsv("data/SEATAC_Cities_Median_Home_Price_0318.tsv",
-            function(d) {
-                     return {
-                            city: d.RegionName,
-                            median_home_price: +d.Median_Sale_Price,
-                            direction: d.Direction            
-                             };
+    //Load Inventory for March 2018 Median Home Prices for Seatle Metro Cities
+    function loadMetroMHP()
+        {
+            d3.tsv("data/SEATAC_Cities_Median_Home_Price_0318.tsv",
+                function(d) {
+                        return {
+                                city: d.RegionName,
+                                median_home_price: +d.Median_Sale_Price,
+                                direction: d.Direction            
+                                };
 
-                }, function(data) {drawBubble(data) }
+                    }, function(data) {drawBubble(data) }
 
-            );
-        
-    }
+                );
+            
+        }
 
-    
+    //Draw bubble chart showing SEA metro cities and their respective 2018 median home prices 
     function drawBubble(dataset)
     {
-        
-        
+  
         var root = d3.hierarchy({children: dataset})
             .sum(function(d) {  return d.median_home_price; });
         
 
-        var node = chart4.selectAll(".node")
+        var node = metroBC.selectAll(".node")
             .data(pack(root).leaves())
             .enter().append("g")
             .attr("class", "node")
@@ -436,11 +446,9 @@ function loadMetroMHP()
 
     }
 
-
-    function drawChart(dataset)
+    //Draw line chart for median home prices from 2010-2018
+    function drawhmPriceLC(dataset)
     {
-        
-
         var x = d3.scaleTime()
                 .rangeRound([0,width]);
         
@@ -454,7 +462,7 @@ function loadMetroMHP()
         x.domain(d3.extent(dataset, function(d) {return d.date;}));
         y.domain(d3.extent(dataset, function(d) {return d.median_home_price;}));
 
-        g= chart1.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+        g= hmPriceLC.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
 
         var path = g.append("path")
                 .datum(dataset)
@@ -528,7 +536,7 @@ function loadMetroMHP()
             .attr("x", 15)
             .attr("dy", ".31em");
 
-        chart1.append("rect")
+        hmPriceLC.append("rect")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
             .attr("class", "overlay")
             .attr("width", width)
@@ -537,6 +545,7 @@ function loadMetroMHP()
             .on("mouseout", function() { focus.style("display", "none"); })
             .on("mousemove", mousemove);
 
+        //surface data tooltips
         function mousemove() {
         var x_point = x.invert(d3.mouse(this)[0]);
             i = bisectDate(dataset, x_point);
@@ -553,7 +562,8 @@ function loadMetroMHP()
 
 }
 
-function drawChart2(dataset)
+//Draw line chart for median home price YoY change from 2011-2017
+function drawhmpYoYLC(dataset)
 {
 
         //draw line chart
@@ -571,7 +581,7 @@ function drawChart2(dataset)
         x.domain(d3.extent(dataset, function(d) {return d.date;}));
         y.domain(d3.extent(dataset, function(d) {return d.yoy;}));
 
-        g= chart2.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+        g= hmpYoYLC.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
 
         var path = g.append("path")
                 .datum(dataset)
@@ -610,7 +620,7 @@ function drawChart2(dataset)
                 .attr("x", 15)
                 .attr("dy", ".31em");
 
-            chart2.append("rect")
+            hmpYoYLC.append("rect")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .attr("class", "overlay")
                 .attr("width", width)
@@ -619,6 +629,7 @@ function drawChart2(dataset)
                 .on("mouseout", function() { focus.style("display", "none"); })
                 .on("mousemove", mousemove);
 
+            //surface data tooltips
             function mousemove() {
             var x_point = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(dataset, x_point),
@@ -633,7 +644,8 @@ function drawChart2(dataset)
 }
 
 
-function drawChart3(dataset)
+//Draw line chart for inventory from 2010-2018
+function drawinvtryLC(dataset)
 {
 
         //draw line chart
@@ -647,12 +659,10 @@ function drawChart3(dataset)
                 .x(function(d) {return x(d.date); })
                 .y(function(d) {return y(d.inventory);} );
 
-
-
         x.domain(d3.extent(dataset, function(d) {return d.date;}));
         y.domain(d3.extent(dataset, function(d) {return d.inventory;}));
 
-        g= chart3.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+        g= invtryLC.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
 
         var path = g.append("path")
                 .datum(dataset)
@@ -725,7 +735,7 @@ function drawChart3(dataset)
                 .attr("x", 15)
                 .attr("dy", ".31em");
 
-            chart3.append("rect")
+            invtryLC.append("rect")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .attr("class", "overlay")
                 .attr("width", width)
@@ -734,6 +744,7 @@ function drawChart3(dataset)
                 .on("mouseout", function() { focus.style("display", "none"); })
                 .on("mousemove", mousemove);
 
+            //surface data tooltips
             function mousemove() {
             var x_point = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(dataset, x_point),
@@ -748,7 +759,8 @@ function drawChart3(dataset)
 }
 
 
-function drawChart5(dataset)
+//Draw line chart for Inventory YoY change from 2011-2017
+function drawinvtryYoYLC(dataset)
 {
 
         //draw line chart
@@ -766,7 +778,7 @@ function drawChart5(dataset)
         x.domain(d3.extent(dataset, function(d) {return d.date;}));
         y.domain(d3.extent(dataset, function(d) {return d.yoy;}));
 
-        g= chart5.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+        g= invtryYoYLC.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
 
         var path = g.append("path")
                 .datum(dataset)
@@ -805,7 +817,7 @@ function drawChart5(dataset)
                 .attr("x", 15)
                 .attr("dy", ".31em");
 
-            chart5.append("rect")
+            invtryYoYLC.append("rect")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .attr("class", "overlay")
                 .attr("width", width)
@@ -814,6 +826,7 @@ function drawChart5(dataset)
                 .on("mouseout", function() { focus.style("display", "none"); })
                 .on("mousemove", mousemove);
 
+            //surface data tooltips
             function mousemove() {
             var x_point = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(dataset, x_point),
